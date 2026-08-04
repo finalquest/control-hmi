@@ -1,0 +1,64 @@
+:root {
+  --bg: #14181d;
+  --panel: #222a31;
+  --panel-alt: #2a333c;
+  --border: #3a444f;
+  --border-strong: #4a5663;
+  --text: #e3eaf2;
+  --text-dim: #8b97a3;
+  --text-muted: #5e6a76;
+  --green: #43a047;
+  --red: #e53935;
+  --gray: #6b7785;
+  --blue: #2b7de6;
+  --water: #3aa0ff;
+  --amber: #f6c143;
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  --radius: 8px;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
