@@ -1,4 +1,4 @@
-import { parseVmBit, parseVmWord } from "./address.js";
+import { parseBitAddress, parseWordAddress } from "./address.js";
 import type { ModbusClient } from "./client.js";
 import type { StateCache } from "./cache.js";
 import { bitAddressOf, mapping } from "./mapping.js";
@@ -25,23 +25,23 @@ export class LogoDriver {
   ) {}
 
   async request(key: RequestKey): Promise<void> {
-    await this.client.writeCoil(parseVmBit(mapping.requests[key]), true);
+    await this.client.writeCoil(parseBitAddress(mapping.requests[key]), true);
   }
 
   async enable(key: SwitchKey): Promise<void> {
-    await this.client.writeCoil(parseVmBit(mapping.switches[key]), true);
+    await this.client.writeCoil(parseBitAddress(mapping.switches[key]), true);
   }
 
   async disable(key: SwitchKey): Promise<void> {
-    await this.client.writeCoil(parseVmBit(mapping.switches[key]), false);
+    await this.client.writeCoil(parseBitAddress(mapping.switches[key]), false);
   }
 
   async set(key: NumberKey, value: number): Promise<void> {
-    await this.client.writeRegister(parseVmWord(mapping.numbers[key]), value);
+    await this.client.writeRegister(parseWordAddress(mapping.numbers[key]), value);
   }
 
   async pulse(key: WritableBitKey, durationMs: number = DEFAULT_PULSE_MS): Promise<void> {
-    const addr = parseVmBit(bitAddressOf(key));
+    const addr = parseBitAddress(bitAddressOf(key));
     const dur = Math.max(MIN_PULSE_MS, Math.min(durationMs, MAX_PULSE_MS));
     await this.client.writeCoil(addr, true);
     await sleep(dur);

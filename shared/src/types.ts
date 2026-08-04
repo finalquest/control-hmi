@@ -1,16 +1,13 @@
 export interface LogoState {
-  autoEnabled: boolean;
-  remoteEnabled: boolean;
+  tankRequestFill: boolean;
+  manualRunRequest: boolean;
+  cisternaHasWater: boolean;
+  pumpCommanded: boolean;
   pumpRunning: boolean;
-  tankHigh: boolean;
-  cisternLow: boolean;
-  alarm: boolean;
-  pumpTimeout: number;
+  pumpManualMode: boolean;
 }
 
 export type StateKey = keyof LogoState;
-
-export type StatePatch = Partial<LogoState>;
 
 type BooleanKeys<T> = {
   [K in keyof T]: T[K] extends boolean ? K : never;
@@ -18,17 +15,25 @@ type BooleanKeys<T> = {
 
 export type BooleanStateKey = BooleanKeys<LogoState>;
 
-export type RequestKey = "resetAlarm" | "manualStart" | "testPump";
+export type StatePatch = Partial<LogoState>;
+
+export type RequestKey =
+  | "remoteManualRun"
+  | "manualMode"
+  | "autoMode"
+  | "resetManualRun";
 
 export const REQUEST_KEYS: readonly RequestKey[] = [
-  "resetAlarm",
-  "manualStart",
-  "testPump",
+  "remoteManualRun",
+  "manualMode",
+  "autoMode",
+  "resetManualRun",
 ];
 
-export type SwitchKey = "autoEnabled" | "remoteEnabled";
+export type SwitchKey = never;
+export const SWITCH_KEYS: readonly SwitchKey[] = [];
 
-export const SWITCH_KEYS: readonly SwitchKey[] = ["autoEnabled", "remoteEnabled"];
+export type NumberKey = never;
 
 export type WritableBitKey = RequestKey | SwitchKey;
 
@@ -38,5 +43,3 @@ export interface VmMapping {
   states: Record<BooleanStateKey, string>;
   numbers: Record<NumberKey, string>;
 }
-
-export type NumberKey = "pumpTimeout";

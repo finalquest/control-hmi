@@ -8,7 +8,7 @@ import { useHmiState } from "../store/store.js";
 
 export function TestScreen(): React.ReactNode {
   const { logo } = useHmiState();
-  const [key, setKey] = useState<WritableBitKey>("testPump");
+  const [key, setKey] = useState<WritableBitKey>("autoMode");
   const [duration, setDuration] = useState(500);
 
   const liveValue =

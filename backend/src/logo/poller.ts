@@ -1,4 +1,4 @@
-import { parseVmBit, parseVmWord } from "./address.js";
+import { parseBitAddress, parseWordAddress } from "./address.js";
 import type { ModbusClient } from "./client.js";
 import type { StateCache } from "./cache.js";
 import { mapping } from "./mapping.js";
@@ -77,10 +77,10 @@ export class Poller {
     private readonly opts: PollerOptions,
   ) {
     const bitEntries = (Object.keys(mapping.states) as BooleanStateKey[]).map(
-      (k) => ({ key: k, addr: parseVmBit(mapping.states[k]) }),
+      (k) => ({ key: k, addr: parseBitAddress(mapping.states[k]) }),
     );
     const wordEntries = (Object.keys(mapping.numbers) as NumberKey[]).map(
-      (k) => ({ key: k, addr: parseVmWord(mapping.numbers[k]) }),
+      (k) => ({ key: k, addr: parseWordAddress(mapping.numbers[k]) }),
     );
     this.bitRanges = groupBits(bitEntries);
     this.wordRanges = groupWords(wordEntries);

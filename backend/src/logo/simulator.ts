@@ -1,11 +1,12 @@
 import { mapping } from "./mapping.js";
-import { parseVmBit } from "./address.js";
+import { parseBitAddress } from "./address.js";
 import type { ModbusClient } from "./client.js";
 import type { RequestKey } from "shared";
 
-const BIT_SIZE = 6808;
-const WORD_SIZE = 851;
-const LADDER_TICK_MS = 200;
+const BIT_SIZE = 16384;
+const WORD_SIZE = 1024;
+const LADDER_TICK_MS = 100;
+const TANK_LOW_THRESHOLD = 30;
 
 type RequestEffect = () => void;
 
@@ -15,29 +16,26 @@ export class SimulatorModbusClient implements ModbusClient {
   private readonly effects: Record<RequestKey, RequestEffect>;
   private ladder: ReturnType<typeof setInterval> | null = null;
 
-  private pumpRunning = false;
-  private tankLevel = 30;
-  private cisternLevel = 80;
-  private testOffTimer: ReturnType<typeof setTimeout> | null = null;
+  private pumpManualMode = false;
+  private manualRunRequest = false;
+  private tankLevel = 25;
+  private pumpCommanded = false;
 
   constructor() {
     this.effects = {
-      resetAlarm: () => {
-        this.writeBit(parseVmBit(mapping.states.alarm), false);
+      autoMode: () => {
+        this.pumpManualMode = false;
       },
-      manualStart: () => {
-        this.pumpRunning = true;
+      manualMode: () => {
+        this.pumpManualMode = true;
       },
-      testPump: () => {
-        this.pumpRunning = true;
-        if (this.testOffTimer) clearTimeout(this.testOffTimer);
-        this.testOffTimer = setTimeout(() => {
-          this.pumpRunning = false;
-          this.testOffTimer = null;
-        }, 2000);
+      remoteManualRun: () => {
+        this.manualRunRequest = true;
+      },
+      resetManualRun: () => {
+        this.manualRunRequest = false;
       },
     };
-    this.writeBit(parseVmBit(mapping.states.autoEnabled), true);
   }
 
   start(): void {
@@ -50,10 +48,6 @@ export class SimulatorModbusClient implements ModbusClient {
       clearInterval(this.ladder);
       this.ladder = null;
     }
-    if (this.testOffTimer) {
-      clearTimeout(this.testOffTimer);
-      this.testOffTimer = null;
-    }
   }
 
   private tick(): void {
@@ -64,7 +58,7 @@ export class SimulatorModbusClient implements ModbusClient {
 
   private consumeRequests(): void {
     (Object.keys(mapping.requests) as RequestKey[]).forEach((key) => {
-      const addr = parseVmBit(mapping.requests[key]);
+      const addr = parseBitAddress(mapping.requests[key]);
       if (this.bits[addr]) {
         this.bits[addr] = 0;
         this.effects[key]();
@@ -73,19 +67,24 @@ export class SimulatorModbusClient implements ModbusClient {
   }
 
   private applyDynamics(): void {
-    if (this.pumpRunning) {
-      this.tankLevel = Math.min(100, this.tankLevel + 4);
-      this.cisternLevel = Math.max(0, this.cisternLevel - 4);
+    const tankRequestFill = this.tankLevel < TANK_LOW_THRESHOLD;
+    this.pumpCommanded =
+      (!this.pumpManualMode && tankRequestFill) || this.manualRunRequest;
+
+    if (this.pumpCommanded) {
+      this.tankLevel = Math.min(100, this.tankLevel + 3);
     } else {
       this.tankLevel = Math.max(0, this.tankLevel - 2);
-      this.cisternLevel = Math.min(100, this.cisternLevel + 2);
     }
   }
 
   private flushStates(): void {
-    this.writeBit(parseVmBit(mapping.states.pumpRunning), this.pumpRunning);
-    this.writeBit(parseVmBit(mapping.states.tankHigh), this.tankLevel >= 95);
-    this.writeBit(parseVmBit(mapping.states.cisternLow), this.cisternLevel <= 10);
+    this.writeBit(parseBitAddress(mapping.states.tankRequestFill), this.tankLevel < TANK_LOW_THRESHOLD);
+    this.writeBit(parseBitAddress(mapping.states.manualRunRequest), this.manualRunRequest);
+    this.writeBit(parseBitAddress(mapping.states.cisternaHasWater), true);
+    this.writeBit(parseBitAddress(mapping.states.pumpCommanded), this.pumpCommanded);
+    this.writeBit(parseBitAddress(mapping.states.pumpRunning), this.pumpCommanded);
+    this.writeBit(parseBitAddress(mapping.states.pumpManualMode), this.pumpManualMode);
   }
 
   async connect(): Promise<void> {}

@@ -16,13 +16,12 @@ import type { LogoState } from "shared";
 
 function initialState(): LogoState {
   return {
-    autoEnabled: false,
-    remoteEnabled: false,
+    tankRequestFill: false,
+    manualRunRequest: false,
+    cisternaHasWater: false,
+    pumpCommanded: false,
     pumpRunning: false,
-    tankHigh: false,
-    cisternLow: false,
-    alarm: false,
-    pumpTimeout: 0,
+    pumpManualMode: false,
   };
 }
 

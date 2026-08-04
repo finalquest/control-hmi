@@ -5,33 +5,29 @@ import type {
   WritableBitKey,
 } from "shared";
 
-export type VmBitAddress = string;
-export type VmWordAddress = string;
+export type BitAddress = string;
+export type WordAddress = string;
 
 export const mapping: VmMapping = {
   requests: {
-    resetAlarm: "V0.0",
-    manualStart: "V0.1",
-    testPump: "V0.2",
+    remoteManualRun: "V0.0",
+    manualMode: "V0.1",
+    autoMode: "V0.2",
+    resetManualRun: "V0.3",
   },
-  switches: {
-    autoEnabled: "V1.0",
-    remoteEnabled: "V1.1",
-  },
+  switches: {},
   states: {
-    pumpRunning: "V20.0",
-    tankHigh: "V20.1",
-    cisternLow: "V20.2",
-    alarm: "V20.3",
-    autoEnabled: "V1.0",
-    remoteEnabled: "V1.1",
+    tankRequestFill: "M1",
+    manualRunRequest: "M2",
+    cisternaHasWater: "M3",
+    pumpCommanded: "M4",
+    pumpRunning: "M5",
+    pumpManualMode: "M7",
   },
-  numbers: {
-    pumpTimeout: "VW20",
-  },
+  numbers: {},
 };
 
-export function bitAddressOf(key: WritableBitKey): VmBitAddress {
+export function bitAddressOf(key: WritableBitKey): BitAddress {
   if (key in mapping.requests) {
     return mapping.requests[key as RequestKey];
   }
