@@ -18,6 +18,7 @@ export class SimulatorModbusClient implements ModbusClient {
 
   private pumpManualMode = false;
   private manualRunRequest = false;
+  private emergency = false;
   private tankLevel = 25;
   private pumpCommanded = false;
 
@@ -34,6 +35,13 @@ export class SimulatorModbusClient implements ModbusClient {
       },
       resetManualRun: () => {
         this.manualRunRequest = false;
+      },
+      emergencyStop: () => {
+        this.emergency = true;
+        this.manualRunRequest = false;
+      },
+      emergencyStopClean: () => {
+        this.emergency = false;
       },
     };
   }
@@ -69,7 +77,8 @@ export class SimulatorModbusClient implements ModbusClient {
   private applyDynamics(): void {
     const tankRequestFill = this.tankLevel < TANK_LOW_THRESHOLD;
     this.pumpCommanded =
-      (!this.pumpManualMode && tankRequestFill) || this.manualRunRequest;
+      !this.emergency &&
+      ((!this.pumpManualMode && tankRequestFill) || this.manualRunRequest);
 
     if (this.pumpCommanded) {
       this.tankLevel = Math.min(100, this.tankLevel + 3);
@@ -85,6 +94,7 @@ export class SimulatorModbusClient implements ModbusClient {
     this.writeBit(parseBitAddress(mapping.states.pumpCommanded), this.pumpCommanded);
     this.writeBit(parseBitAddress(mapping.states.pumpRunning), this.pumpCommanded);
     this.writeBit(parseBitAddress(mapping.states.pumpManualMode), this.pumpManualMode);
+    this.writeBit(parseBitAddress(mapping.states.emergency), this.emergency);
   }
 
   async connect(): Promise<void> {}

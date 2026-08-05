@@ -14,6 +14,8 @@ export const mapping: VmMapping = {
     manualMode: "V0.1",
     autoMode: "V0.2",
     resetManualRun: "V0.3",
+    emergencyStop: "V0.4",
+    emergencyStopClean: "V0.5",
   },
   switches: {},
   states: {
@@ -23,6 +25,7 @@ export const mapping: VmMapping = {
     pumpCommanded: "M4",
     pumpRunning: "M5",
     pumpManualMode: "M7",
+    emergency: "M9",
   },
   numbers: {},
 };

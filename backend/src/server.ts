@@ -22,6 +22,7 @@ function initialState(): LogoState {
     pumpCommanded: false,
     pumpRunning: false,
     pumpManualMode: false,
+    emergency: false,
   };
 }
 

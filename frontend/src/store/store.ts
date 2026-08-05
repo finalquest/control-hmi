@@ -16,6 +16,7 @@ const initialLogo: LogoState = {
   pumpCommanded: false,
   pumpRunning: false,
   pumpManualMode: false,
+  emergency: false,
 };
 
 let state: HmiState = {

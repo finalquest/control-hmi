@@ -74,6 +74,7 @@ export function Tank({
             height={waterH}
             fill={isCistern ? colors.waterDeep : colors.water}
             opacity={0.9}
+            style={{ transition: "y 0.5s ease-out, height 0.5s ease-out" }}
           />
         )}
         <rect

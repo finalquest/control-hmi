@@ -5,6 +5,7 @@ export interface LogoState {
   pumpCommanded: boolean;
   pumpRunning: boolean;
   pumpManualMode: boolean;
+  emergency: boolean;
 }
 
 export type StateKey = keyof LogoState;
@@ -21,13 +22,17 @@ export type RequestKey =
   | "remoteManualRun"
   | "manualMode"
   | "autoMode"
-  | "resetManualRun";
+  | "resetManualRun"
+  | "emergencyStop"
+  | "emergencyStopClean";
 
 export const REQUEST_KEYS: readonly RequestKey[] = [
   "remoteManualRun",
   "manualMode",
   "autoMode",
   "resetManualRun",
+  "emergencyStop",
+  "emergencyStopClean",
 ];
 
 export type SwitchKey = never;
