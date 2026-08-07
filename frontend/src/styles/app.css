@@ -915,48 +915,219 @@
   gap: 14px;
 }
 
+.ac__layout {
+  display: flex;
+  gap: 16px;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.ac__diagram {
+  flex: 1 1 360px;
+  min-width: 0;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+}
+
 .ac__svg {
   width: 100%;
-  max-width: 760px;
   height: auto;
-  margin: 0 auto;
   display: block;
 }
 
-.ac__panel {
+.ac__controls {
+  flex: 1 1 320px;
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 8px;
 }
 
-.ac__modes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+.ac__readouts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 
-.ac__setpoint {
+.ac__readout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 8px;
+  background: var(--panel);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+}
+
+.ac__readout-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.ac__readout-value {
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.ac__readout-value--actual {
+  color: var(--blue);
+}
+
+.ac__readout-value--target {
+  color: var(--amber-bright);
+}
+
+.ac__deg {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-dim);
+  margin-left: 2px;
+}
+
+.ac__setpoint-ctrl {
   display: flex;
   align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.ac__meta-item {
-  font-size: 13px;
-  color: var(--text-dim);
-}
-
-.ac__meta-item strong {
+.ac__arrow {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: var(--panel-alt);
+  border: 1px solid var(--border-strong);
   color: var(--text);
+  font-size: 20px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, transform 0.05s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ac__arrow:hover {
+  background: #323d47;
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.ac__arrow:active {
+  transform: translateY(1px);
+}
+
+.ac__arrow--up:hover {
+  border-color: var(--red);
+  color: var(--red-bright);
+}
+
+.ac__apply {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
   font-weight: 700;
+}
+
+.ac__modes-hmi {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ac__section-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.ac__mode-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.ac__mode {
+  padding: 16px 8px;
+  background: var(--panel);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  color: var(--text-dim);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s, transform 0.05s;
+}
+
+.ac__mode:hover {
+  background: var(--panel-alt);
+  color: var(--text);
+}
+
+.ac__mode:active {
+  transform: translateY(1px);
+}
+
+.ac__mode--active {
+  color: #fff;
+}
+
+.ac__mode--off.ac__mode--active {
+  background: var(--gray);
+  border-color: var(--gray);
+}
+
+.ac__mode--cool.ac__mode--active {
+  background: var(--blue);
+  border-color: var(--blue);
+}
+
+.ac__mode--heat.ac__mode--active {
+  background: var(--red);
+  border-color: var(--red);
+}
+
+.ac__mode--auto.ac__mode--active {
+  background: var(--green);
+  border-color: var(--green);
+}
+
+.ac__mode--dry.ac__mode--active {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: #1a1a1a;
+}
+
+.ac__mode--fan_only.ac__mode--active {
+  background: var(--water);
+  border-color: var(--water);
+}
+
+.ac__fan {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.ac__fan strong {
+  color: var(--text);
   text-transform: capitalize;
+}
+
+@media (max-width: 700px) {
+  .ac__readouts {
+    grid-template-columns: 1fr;
+  }
 }
 
 .guard {

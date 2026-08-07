@@ -108,96 +108,107 @@ export function AcCycle(): React.ReactNode {
   const coldLiquid = colors.water;
   const coldGas = colors.blue;
 
+  const dec = (): void => setSetpoint((s) => Math.max(7, +(s - 0.5).toFixed(1)));
+  const inc = (): void => setSetpoint((s) => Math.min(35, +(s + 0.5).toFixed(1)));
+  const apply = (): void => climateSet(ENTITY, { temperature: setpoint });
+
   return (
     <div className="ac">
-      <svg viewBox="0 0 720 470" className="ac__svg">
-        <text x={360} y={30} textAnchor="middle" fill={colors.text} fontSize={18} fontWeight={700}>
-          Ciclo de refrigeración — Aire acondicionado
-        </text>
-        <text x={360} y={50} textAnchor="middle" fill={colors.textMuted} fontSize={11}>
-          {running ? `en marcha · ${mode}` : "detenido"}
-        </text>
+      <div className="ac__layout">
+        <div className="ac__diagram">
+          <svg viewBox="0 0 720 470" className="ac__svg">
+            <text x={360} y={30} textAnchor="middle" fill={colors.text} fontSize={18} fontWeight={700}>
+              Ciclo de refrigeración
+            </text>
+            <text x={360} y={50} textAnchor="middle" fill={colors.textMuted} fontSize={11}>
+              {running ? `en marcha · ${mode}` : "detenido"}
+            </text>
 
-        <Pipe d={`M ${COMP.x + 34} ${COMP.y} L ${COND.x} ${COMP.y}`} color={hot} active={running} />
-        <Pipe d={`M ${COND.x + COND.w / 2} ${COND.y + COND.h} L ${EXP.x} ${EXP.y - 16}`} color={liquid} active={running} />
-        <Pipe d={`M ${EXP.x - 16} ${EXP.y} L ${EVAP.x + EVAP.w} ${EVAP.y + EVAP.h / 2}`} color={coldLiquid} active={running} />
-        <Pipe d={`M ${EVAP.x} ${EVAP.y + EVAP.h / 2} L ${COMP.x} ${COMP.y}`} color={coldGas} active={running} />
+            <Pipe d={`M ${COMP.x + 34} ${COMP.y} L ${COND.x} ${COMP.y}`} color={hot} active={running} />
+            <Pipe d={`M ${COND.x + COND.w / 2} ${COND.y + COND.h} L ${EXP.x} ${EXP.y - 16}`} color={liquid} active={running} />
+            <Pipe d={`M ${EXP.x - 16} ${EXP.y} L ${EVAP.x + EVAP.w} ${EVAP.y + EVAP.h / 2}`} color={coldLiquid} active={running} />
+            <Pipe d={`M ${EVAP.x} ${EVAP.y + EVAP.h / 2} L ${COMP.x} ${COMP.y}`} color={coldGas} active={running} />
 
-        <Coil x={COND.x} y={COND.y} w={COND.w} h={COND.h} tint="rgba(229,57,53,0.15)" hot />
-        <text x={COND.x + COND.w / 2} y={COND.y - 8} textAnchor="middle" fill={colors.redBright} fontSize={12} fontWeight={700}>
-          Condensador
-        </text>
-        <text x={COND.x + COND.w / 2} y={COND.y + COND.h + 16} textAnchor="middle" fill={colors.textMuted} fontSize={10}>
-          unidad exterior
-        </text>
+            <Coil x={COND.x} y={COND.y} w={COND.w} h={COND.h} tint="rgba(229,57,53,0.15)" hot />
+            <text x={COND.x + COND.w / 2} y={COND.y - 8} textAnchor="middle" fill={colors.redBright} fontSize={12} fontWeight={700}>
+              Condensador
+            </text>
+            <text x={COND.x + COND.w / 2} y={COND.y + COND.h + 16} textAnchor="middle" fill={colors.textMuted} fontSize={10}>
+              unidad exterior
+            </text>
 
-        <Coil x={EVAP.x} y={EVAP.y} w={EVAP.w} h={EVAP.h} tint="rgba(58,160,255,0.15)" hot={false} />
-        <text x={EVAP.x + EVAP.w / 2} y={EVAP.y - 8} textAnchor="middle" fill={colors.water} fontSize={12} fontWeight={700}>
-          Evaporador
-        </text>
-        <text x={EVAP.x + EVAP.w / 2} y={EVAP.y + EVAP.h / 2 + 2} textAnchor="middle" fill={colors.text} fontSize={22} fontWeight={800}>
-          {indoor ?? "—"}°
-        </text>
-        <text x={EVAP.x + EVAP.w / 2} y={EVAP.y + EVAP.h + 16} textAnchor="middle" fill={colors.textMuted} fontSize={10}>
-          unidad interior
-        </text>
+            <Coil x={EVAP.x} y={EVAP.y} w={EVAP.w} h={EVAP.h} tint="rgba(58,160,255,0.15)" hot={false} />
+            <text x={EVAP.x + EVAP.w / 2} y={EVAP.y - 8} textAnchor="middle" fill={colors.water} fontSize={12} fontWeight={700}>
+              Evaporador
+            </text>
+            <text x={EVAP.x + EVAP.w / 2} y={EVAP.y + EVAP.h / 2 + 2} textAnchor="middle" fill={colors.text} fontSize={22} fontWeight={800}>
+              {indoor ?? "—"}°
+            </text>
+            <text x={EVAP.x + EVAP.w / 2} y={EVAP.y + EVAP.h + 16} textAnchor="middle" fill={colors.textMuted} fontSize={10}>
+              unidad interior
+            </text>
 
-        <g style={{ opacity: running ? 1 : 0.45 }}>
-          <circle cx={COMP.x} cy={COMP.y} r={34} fill={colors.panelAlt} stroke={running ? colors.green : colors.borderStrong} strokeWidth={3} />
-          <g className={running ? "ref-spin" : ""} style={{ transformOrigin: `${COMP.x}px ${COMP.y}px` }}>
-            <circle cx={COMP.x} cy={COMP.y} r={20} fill="none" stroke={running ? colors.greenBright : colors.gray} strokeWidth={4} strokeDasharray="22 12" />
-          </g>
-          <circle cx={COMP.x} cy={COMP.y} r={6} fill={running ? colors.greenBright : colors.gray} />
-        </g>
-        <text x={COMP.x} y={COMP.y - 44} textAnchor="middle" fill={colors.text} fontSize={12} fontWeight={700}>
-          Compresor
-        </text>
+            <g style={{ opacity: running ? 1 : 0.45 }}>
+              <circle cx={COMP.x} cy={COMP.y} r={34} fill={colors.panelAlt} stroke={running ? colors.green : colors.borderStrong} strokeWidth={3} />
+              <g className={running ? "ref-spin" : ""} style={{ transformOrigin: `${COMP.x}px ${COMP.y}px` }}>
+                <circle cx={COMP.x} cy={COMP.y} r={20} fill="none" stroke={running ? colors.greenBright : colors.gray} strokeWidth={4} strokeDasharray="22 12" />
+              </g>
+              <circle cx={COMP.x} cy={COMP.y} r={6} fill={running ? colors.greenBright : colors.gray} />
+            </g>
+            <text x={COMP.x} y={COMP.y - 44} textAnchor="middle" fill={colors.text} fontSize={12} fontWeight={700}>
+              Compresor
+            </text>
 
-        <g style={{ opacity: running ? 1 : 0.45 }}>
-          <polygon
-            points={`${EXP.x},${EXP.y - 16} ${EXP.x + 16},${EXP.y} ${EXP.x},${EXP.y + 16} ${EXP.x - 16},${EXP.y}`}
-            fill={colors.panelAlt}
-            stroke={running ? colors.amberBright : colors.borderStrong}
-            strokeWidth={2}
-          />
-          <line x1={EXP.x - 10} y1={EXP.y} x2={EXP.x + 10} y2={EXP.y} stroke={running ? colors.amberBright : colors.gray} strokeWidth={2} />
-        </g>
-        <text x={EXP.x + 26} y={EXP.y + 4} fill={colors.textMuted} fontSize={11}>
-          válvula expansión
-        </text>
-
-        <g className="hmi-clickable" onClick={() => setMode(mode === "off" ? "cool" : "off")}>
-          <rect x={300} y={210} width={120} height={44} rx={22} fill={running ? colors.blue : colors.panelAlt} stroke={running ? colors.blue : colors.borderStrong} strokeWidth={2} />
-          <text x={360} y={237} textAnchor="middle" fill={running ? "#fff" : colors.textDim} fontSize={15} fontWeight={700} letterSpacing={1}>
-            {running ? MODES.find((m) => m.key === mode)?.label?.toUpperCase() ?? "ON" : "OFF"}
-          </text>
-        </g>
-        <text x={360} y={270} textAnchor="middle" fill={colors.textMuted} fontSize={10}>
-          click para {running ? "detener" : "arrancar"}
-        </text>
-      </svg>
-
-      <div className="ac__panel">
-        <div className="ac__modes">
-          {MODES.map((m) => (
-            <button
-              key={m.key}
-              className={`btn btn--sm ${mode === m.key ? "btn--active" : ""}`}
-              onClick={() => setMode(m.key)}
-            >
-              {m.label}
-            </button>
-          ))}
+            <g style={{ opacity: running ? 1 : 0.45 }}>
+              <polygon
+                points={`${EXP.x},${EXP.y - 16} ${EXP.x + 16},${EXP.y} ${EXP.x},${EXP.y + 16} ${EXP.x - 16},${EXP.y}`}
+                fill={colors.panelAlt}
+                stroke={running ? colors.amberBright : colors.borderStrong}
+                strokeWidth={2}
+              />
+              <line x1={EXP.x - 10} y1={EXP.y} x2={EXP.x + 10} y2={EXP.y} stroke={running ? colors.amberBright : colors.gray} strokeWidth={2} />
+            </g>
+            <text x={EXP.x + 26} y={EXP.y + 4} fill={colors.textMuted} fontSize={11}>
+              válvula expansión
+            </text>
+          </svg>
         </div>
-        <div className="ac__setpoint">
-          <span className="ac__meta-item">Ventilador <strong>{fanMode}</strong></span>
-          <div className="stepper">
-            <button className="btn btn--sm" onClick={() => setSetpoint((s) => Math.max(7, +(s - 0.5).toFixed(1)))}>−</button>
-            <span className="value">{setpoint.toFixed(1)}°C</span>
-            <button className="btn btn--sm" onClick={() => setSetpoint((s) => Math.min(35, +(s + 0.5).toFixed(1)))}>+</button>
-            <button className="btn btn--sm btn--primary" onClick={() => climateSet(ENTITY, { temperature: setpoint })}>
-              Aplicar
-            </button>
+
+        <div className="ac__controls">
+          <div className="ac__readouts">
+            <div className="ac__readout">
+              <span className="ac__readout-label">Temperatura actual</span>
+              <span className="ac__readout-value ac__readout-value--actual">
+                {indoor ?? "—"}<span className="ac__deg">°C</span>
+              </span>
+            </div>
+            <div className="ac__readout">
+              <span className="ac__readout-label">Temperatura pedida</span>
+              <div className="ac__setpoint-ctrl">
+                <button className="ac__arrow" onClick={dec} aria-label="bajar">▼</button>
+                <span className="ac__readout-value ac__readout-value--target">
+                  {setpoint.toFixed(1)}<span className="ac__deg">°C</span>
+                </span>
+                <button className="ac__arrow ac__arrow--up" onClick={inc} aria-label="subir">▲</button>
+              </div>
+              <button className="btn btn--primary ac__apply" onClick={apply}>Aplicar {setpoint.toFixed(1)}°</button>
+            </div>
+          </div>
+
+          <div className="ac__modes-hmi">
+            <span className="ac__section-label">Modo</span>
+            <div className="ac__mode-grid">
+              {MODES.map((m) => (
+                <button
+                  key={m.key}
+                  className={`ac__mode ac__mode--${m.key} ${mode === m.key ? "ac__mode--active" : ""}`}
+                  onClick={() => setMode(m.key)}
+                >
+                  {m.label}
+                </button>
+              ))}
+            </div>
+            <span className="ac__fan">Ventilador: <strong>{fanMode}</strong></span>
           </div>
         </div>
       </div>
