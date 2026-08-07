@@ -211,9 +211,9 @@ export const INFRA = {
     "binary_sensor.lxc_unifi_103_status",
     "binary_sensor.lxc_nginxproxymanager_104_status",
   ],
-  temps: [
-    "sensor.central_dogma_temperature",
-    "sensor.terminal_dogma_terminal_dogma_cpu_temperature",
+  networkTemps: [
+    { id: "sensor.central_dogma_temperature", name: "Central Dogma" },
+    { id: "sensor.terminal_dogma_terminal_dogma_cpu_temperature", name: "Terminal Dogma" },
   ],
   wan: {
     down: "sensor.terminal_dogma_port_9_rx",

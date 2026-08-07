@@ -80,6 +80,11 @@ function NetworkingBlock(): React.ReactNode {
         <WanReadout entityId={INFRA.wan.latencyCloudflare} label="CF" unit="ms" />
         <WanReadout entityId={INFRA.wan.latencyGoogle} label="Google" unit="ms" />
       </div>
+      <div className="wan__grid">
+        {INFRA.networkTemps.map((t) => (
+          <TempReadout key={t.id} entityId={t.id} label={t.name} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -92,11 +97,6 @@ export function InfraPanel(): React.ReactNode {
         <StatusRow title="Proxmox / VMs" ids={INFRA.proxmox} />
         <NetworkingBlock />
         <StatusRow title="Control" ids={INFRA.control} />
-      </div>
-      <div className="infra-temps">
-        {INFRA.temps.map((id) => (
-          <TempReadout key={id} entityId={id} label="CPU" />
-        ))}
       </div>
     </section>
   );
