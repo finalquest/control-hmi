@@ -849,10 +849,6 @@
   border-radius: 6px;
 }
 
-.infra-block--wide {
-  grid-column: 1 / -1;
-}
-
 .infra-block__title {
   font-size: 11px;
   text-transform: uppercase;
@@ -875,7 +871,7 @@
 
 .wan__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 6px;
   margin-top: 8px;
 }

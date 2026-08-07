@@ -67,7 +67,7 @@ function WanReadout({
 
 function NetworkingBlock(): React.ReactNode {
   return (
-    <div className="infra-block infra-block--wide">
+    <div className="infra-block">
       <span className="infra-block__title">Networking</span>
       <div className="infra-block__row">
         {INFRA.network.map((id) => (
@@ -75,10 +75,10 @@ function NetworkingBlock(): React.ReactNode {
         ))}
       </div>
       <div className="wan__grid">
-        <WanReadout entityId={INFRA.wan.down} label="Download" unit="Mbit/s" highlight />
-        <WanReadout entityId={INFRA.wan.up} label="Upload" unit="Mbit/s" highlight />
-        <WanReadout entityId={INFRA.wan.latencyCloudflare} label="Latencia Cloudflare" unit="ms" />
-        <WanReadout entityId={INFRA.wan.latencyGoogle} label="Latencia Google" unit="ms" />
+        <WanReadout entityId={INFRA.wan.down} label="Down" unit="Mbit/s" highlight />
+        <WanReadout entityId={INFRA.wan.up} label="Up" unit="Mbit/s" highlight />
+        <WanReadout entityId={INFRA.wan.latencyCloudflare} label="CF" unit="ms" />
+        <WanReadout entityId={INFRA.wan.latencyGoogle} label="Google" unit="ms" />
       </div>
     </div>
   );
