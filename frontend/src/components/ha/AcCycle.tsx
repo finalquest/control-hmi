@@ -1,9 +1,16 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useHaEntity } from "../../store/store.js";
 import { colors } from "../../styles/theme.js";
-import { climateSet } from "../../api/ha.js";
+import { climateSet, climateSetFanMode } from "../../api/ha.js";
 
 const ENTITY = "climate.aire_acondicionado";
+
+const FAN_LABELS: Record<string, string> = {
+  nature: "Natural",
+  low: "Baja",
+  medium: "Media",
+  high: "Alta",
+};
 
 const MODES: Array<{ key: string; label: string }> = [
   { key: "off", label: "Off" },
@@ -93,9 +100,33 @@ export function AcCycle(): React.ReactNode {
   const target = (attr.temperature as number | null) ?? 24;
   const [setpoint, setSetpoint] = useState<number>(target);
   const fanMode = (attr.fan_mode as string | undefined) ?? "—";
+  const fanModes = (attr.fan_modes as string[] | undefined) ?? ["nature", "low", "medium", "high"];
+  const applyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (applyTimer.current) clearTimeout(applyTimer.current);
+    };
+  }, []);
 
   const setMode = (m: string): void => {
     climateSet(ENTITY, { hvac_mode: m });
+  };
+
+  const scheduleApply = (value: number): void => {
+    if (applyTimer.current) clearTimeout(applyTimer.current);
+    applyTimer.current = setTimeout(() => climateSet(ENTITY, { temperature: value }), 800);
+  };
+
+  const dec = (): void => {
+    const v = Math.max(7, +(setpoint - 0.5).toFixed(1));
+    setSetpoint(v);
+    scheduleApply(v);
+  };
+  const inc = (): void => {
+    const v = Math.min(35, +(setpoint + 0.5).toFixed(1));
+    setSetpoint(v);
+    scheduleApply(v);
   };
 
   const COMP = { x: 200, y: 130 };
@@ -107,10 +138,6 @@ export function AcCycle(): React.ReactNode {
   const liquid = colors.amber;
   const coldLiquid = colors.water;
   const coldGas = colors.blue;
-
-  const dec = (): void => setSetpoint((s) => Math.max(7, +(s - 0.5).toFixed(1)));
-  const inc = (): void => setSetpoint((s) => Math.min(35, +(s + 0.5).toFixed(1)));
-  const apply = (): void => climateSet(ENTITY, { temperature: setpoint });
 
   return (
     <div className="ac">
@@ -191,7 +218,6 @@ export function AcCycle(): React.ReactNode {
                 </span>
                 <button className="ac__arrow ac__arrow--up" onClick={inc} aria-label="subir">▲</button>
               </div>
-              <button className="btn btn--primary ac__apply" onClick={apply}>Aplicar {setpoint.toFixed(1)}°</button>
             </div>
           </div>
 
@@ -208,7 +234,21 @@ export function AcCycle(): React.ReactNode {
                 </button>
               ))}
             </div>
-            <span className="ac__fan">Ventilador: <strong>{fanMode}</strong></span>
+          </div>
+
+          <div className="ac__modes-hmi">
+            <span className="ac__section-label">Ventilador</span>
+            <div className="ac__fan-grid">
+              {fanModes.map((f) => (
+                <button
+                  key={f}
+                  className={`ac__fan-btn ${fanMode === f ? "ac__fan-btn--active" : ""}`}
+                  onClick={() => climateSetFanMode(ENTITY, f)}
+                >
+                  {FAN_LABELS[f] ?? f}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>

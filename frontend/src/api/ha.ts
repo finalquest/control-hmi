@@ -47,6 +47,10 @@ export function climateSet(
   callHa({ domain: "climate", service: "set_hvac_mode" in data ? "set_hvac_mode" : "set_temperature", data: { entity_id: entityId, ...data } });
 }
 
+export function climateSetFanMode(entityId: string, fanMode: string): void {
+  callHa({ domain: "climate", service: "set_fan_mode", data: { entity_id: entityId, fan_mode: fanMode } });
+}
+
 export function fanToggle(entityId: string, current: boolean): void {
   toggle("fan", entityId, current);
 }
