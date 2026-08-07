@@ -1,6 +1,7 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
 import websocket from "@fastify/websocket";
+import fastifyStatic from "@fastify/static";
 import { loadConfig } from "./config.js";
 import { StateCache } from "./logo/cache.js";
 import { LogoDriver } from "./logo/driver.js";
@@ -113,6 +114,17 @@ async function main(): Promise<void> {
 
   app.get("/health", async () => ({ ok: true, sim: config.sim, haMock: config.haMock }));
   app.get("/api/mapping", async () => mapping);
+
+  if (config.staticRoot) {
+    await app.register(fastifyStatic, {
+      root: config.staticRoot,
+      prefix: "/",
+      wildcard: false,
+    });
+    app.setNotFoundHandler(async (_req, reply) => {
+      reply.sendFile("index.html");
+    });
+  }
 
   const shutdown = async (): Promise<void> => {
     poller.stop();

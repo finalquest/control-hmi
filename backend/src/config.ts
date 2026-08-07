@@ -19,6 +19,7 @@ export interface Config {
   haUrl: string;
   haToken: string;
   haPollMs: number;
+  staticRoot?: string;
 }
 
 function boolEnv(name: string, fallback: boolean): boolean {
@@ -50,5 +51,6 @@ export function loadConfig(): Config {
     haUrl,
     haToken,
     haPollMs: intEnv("HA_POLL_MS", 2000),
+    staticRoot: process.env.STATIC_ROOT || undefined,
   };
 }
