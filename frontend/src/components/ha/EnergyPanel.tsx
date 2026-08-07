@@ -2,6 +2,7 @@ import { useHaEntity } from "../../store/store.js";
 import { colors } from "../../styles/theme.js";
 import { switchToggle } from "../../api/ha.js";
 import { ENERGY_SONOFF } from "../../ha/rooms.js";
+import { GuardedToggle } from "./GuardedToggle.js";
 
 function EnergyUnit(props: {
   name: string;
@@ -30,12 +31,11 @@ function EnergyUnit(props: {
     <div className="energy-unit">
       <div className="energy-unit__head">
         <span className="energy-unit__name">{props.name}</span>
-        <button
-          className={`btn btn--sm ${swOn ? "btn--active" : ""}`}
-          onClick={() => switchToggle(props.switchId, swOn)}
-        >
-          {swOn ? "ON" : "OFF"}
-        </button>
+        <GuardedToggle
+          entityId={props.switchId}
+          on={swOn}
+          onToggle={() => switchToggle(props.switchId, swOn)}
+        />
       </div>
       <svg viewBox="0 0 120 90" className="energy-unit__gauge">
         <path

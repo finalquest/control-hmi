@@ -228,12 +228,7 @@ export const INFRA = {
     "light.neotokyo_2_led",
     "light.tokyo_3_led",
   ],
-  control: [
-    "switch.control_24v",
-    "switch.motor",
-    "switch.sonoff_1001d4e658",
-    "switch.sonoff_1001db2d0b",
-  ],
+  control: ["switch.control_24v", "switch.motor"],
   k1max: {
     bed: "sensor.k1max_a01c_bed_temperature",
     extruder: "sensor.k1max_a01c_extruder_temperature",
