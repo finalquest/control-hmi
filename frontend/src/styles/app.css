@@ -1152,6 +1152,132 @@
   }
 }
 
+@keyframes fan-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.fan-spin {
+  animation-name: fan-spin;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.fans-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.fan-unit {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.fan-unit--on {
+  border-color: var(--blue);
+}
+
+.fan-unit__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.fan-unit__name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.fan-unit__viz {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.fan-unit__svg {
+  width: 120px;
+  height: 120px;
+}
+
+.fan-unit__state {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.fan-unit--on .fan-unit__state {
+  color: var(--blue);
+}
+
+.fan-unit__speeds {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.fan-unit__btn {
+  padding: 10px 0;
+  background: var(--panel);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  color: var(--text-dim);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.fan-unit__btn:hover {
+  background: var(--panel-alt);
+  color: var(--text);
+}
+
+.fan-unit__btn--active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+
+.fan-unit__dir {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.fan-unit__dirbtn {
+  padding: 9px 4px;
+  background: var(--panel);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  color: var(--text-dim);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.fan-unit__dirbtn:hover {
+  background: var(--panel-alt);
+  color: var(--text);
+}
+
+.fan-unit__dirbtn--active {
+  background: var(--water);
+  border-color: var(--water);
+  color: #fff;
+}
+
 .guard {
   position: relative;
   display: flex;

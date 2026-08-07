@@ -55,6 +55,14 @@ export function fanToggle(entityId: string, current: boolean): void {
   toggle("fan", entityId, current);
 }
 
+export function fanSetPercentage(entityId: string, percentage: number): void {
+  callHa({ domain: "fan", service: "set_percentage", data: { entity_id: entityId, percentage } });
+}
+
+export function fanSetDirection(entityId: string, direction: "forward" | "reverse"): void {
+  callHa({ domain: "fan", service: "set_direction", data: { entity_id: entityId, direction } });
+}
+
 export function mediaToggle(entityId: string, current: boolean): void {
   callHa({ domain: "media_player", service: current ? "media_play_pause" : "media_play", data: { entity_id: entityId } });
 }

@@ -61,6 +61,13 @@ export class MockHaClient implements HaApiClient {
       case "set_fan_mode":
         entry.attributes.fan_mode = data.fan_mode;
         return;
+      case "set_percentage":
+        entry.attributes.percentage = Number(data.percentage ?? 0);
+        entry.state = Number(data.percentage ?? 0) > 0 ? "on" : "off";
+        return;
+      case "set_direction":
+        entry.attributes.direction = data.direction;
+        return;
       case "press":
       case "trigger":
         return;

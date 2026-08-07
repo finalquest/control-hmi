@@ -54,11 +54,6 @@ export const ROOMS: RoomDef[] = [
     name: "Oficina",
     zone: "interior",
     lights: ["light.luz_ventilador_oficina"],
-    fan: {
-      fanId: "fan.ventilador_oficina",
-      lightId: "input_boolean.fan_oficina_light",
-      scriptPrefix: "script.fan_oficina",
-    },
     climate: {
       temp: "sensor.temperatura_oficina_temperature",
       humidity: "sensor.temperatura_oficina_humidity",
@@ -70,11 +65,6 @@ export const ROOMS: RoomDef[] = [
     name: "Pintura",
     zone: "interior",
     lights: ["light.luz_ventilador_pintura"],
-    fan: {
-      fanId: "fan.ventilador_pintura",
-      lightId: "input_boolean.fan_pintura_light",
-      scriptPrefix: "script.fan_pintura",
-    },
     motion: "binary_sensor.movimiento_pintuira_occupancy",
     illumination: "sensor.movimiento_pintuira_illumination",
     climate: { battery: "sensor.movimiento_pintuira_battery" },
@@ -84,11 +74,6 @@ export const ROOMS: RoomDef[] = [
     name: "Habitación",
     zone: "interior",
     lights: ["light.luz_ventilador_habitacion"],
-    fan: {
-      fanId: "fan.ventilador_habitacion",
-      lightId: "input_boolean.fan_habitacion_light",
-      scriptPrefix: "script.fan_habitacion",
-    },
     climate: {
       temp: "sensor.temperatura_habitacion_temperature",
       humidity: "sensor.temperatura_habitacion_humidity",
@@ -177,6 +162,12 @@ export const ROOMS: RoomDef[] = [
     },
   },
 ];
+
+export const FANS = [
+  { id: "oficina", name: "Oficina", fanId: "fan.ventilador_oficina", lightId: "light.luz_ventilador_oficina" },
+  { id: "pintura", name: "Pintura", fanId: "fan.ventilador_pintura", lightId: "light.luz_ventilador_pintura" },
+  { id: "habitacion", name: "Habitación", fanId: "fan.ventilador_habitacion", lightId: "light.luz_ventilador_habitacion" },
+] as const;
 
 export const ENERGY_SONOFF = [
   {

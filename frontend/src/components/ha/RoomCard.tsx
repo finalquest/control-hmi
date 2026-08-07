@@ -2,7 +2,6 @@ import { useHaEntity } from "../../store/store.js";
 import { colors } from "../../styles/theme.js";
 import { runScene } from "../../api/ha.js";
 import { DeviceLamp } from "./DeviceLamp.js";
-import { FanCard } from "./FanCard.js";
 import type { RoomDef } from "../../ha/rooms.js";
 
 function Readout({
@@ -121,15 +120,6 @@ export function RoomCard({
           {room.lights?.map((id) => <DeviceLamp key={id} entityId={id} />)}
           {room.switches?.map((id) => <DeviceLamp key={id} entityId={id} />)}
         </div>
-      )}
-
-      {room.fan && (
-        <FanCard
-          label="Ventilador"
-          fanId={room.fan.fanId}
-          lightBooleanId={room.fan.lightId}
-          scriptPrefix={room.fan.scriptPrefix}
-        />
       )}
 
       {room.scenes && room.scenes.length > 0 && (
