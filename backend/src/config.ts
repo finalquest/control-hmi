@@ -15,6 +15,7 @@ export interface Config {
   httpPort: number;
   corsOrigin: string;
   haEnabled: boolean;
+  haMock: boolean;
   haUrl: string;
   haToken: string;
   haPollMs: number;
@@ -44,7 +45,8 @@ export function loadConfig(): Config {
     pollMs: intEnv("POLL_MS", 250),
     httpPort: intEnv("PORT", 3001),
     corsOrigin: process.env.CORS_ORIGIN ?? "*",
-    haEnabled: boolEnv("HA_ENABLED", haToken.length > 0),
+    haEnabled: boolEnv("HA_ENABLED", haToken.length > 0 || boolEnv("HA_MOCK", false)),
+    haMock: boolEnv("HA_MOCK", false),
     haUrl,
     haToken,
     haPollMs: intEnv("HA_POLL_MS", 2000),

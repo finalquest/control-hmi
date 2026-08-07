@@ -13,6 +13,8 @@ import {
 import { SimulatorModbusClient } from "./logo/simulator.js";
 import { WsHub } from "./websocket/hub.js";
 import { HaAdapter } from "./homeassistant/adapter.js";
+import { HaClient } from "./homeassistant/client.js";
+import { MockHaClient } from "./homeassistant/mock.js";
 import type { LogoState } from "shared";
 
 function initialState(): LogoState {
@@ -96,9 +98,10 @@ async function main(): Promise<void> {
 
   let haAdapter: HaAdapter | null = null;
   if (config.haEnabled) {
-    haAdapter = new HaAdapter(config.haUrl, config.haToken, hub, {
-      pollMs: config.haPollMs,
-    });
+    const client = config.haMock
+      ? new MockHaClient()
+      : new HaClient({ baseUrl: config.haUrl, token: config.haToken });
+    haAdapter = new HaAdapter(client, hub, { pollMs: config.haPollMs });
     hub.setHaAdapter(haAdapter);
     haAdapter.start();
   }
@@ -108,7 +111,7 @@ async function main(): Promise<void> {
   await app.register(websocket);
   hub.attach(app);
 
-  app.get("/health", async () => ({ ok: true, sim: config.sim }));
+  app.get("/health", async () => ({ ok: true, sim: config.sim, haMock: config.haMock }));
   app.get("/api/mapping", async () => mapping);
 
   const shutdown = async (): Promise<void> => {
@@ -122,7 +125,9 @@ async function main(): Promise<void> {
   process.on("SIGTERM", shutdown);
 
   await app.listen({ host: "0.0.0.0", port: config.httpPort });
-  console.log(`backend listo en :${config.httpPort} (sim=${config.sim})`);
+  console.log(
+    `backend listo en :${config.httpPort} (sim=${config.sim} haMock=${config.haMock})`,
+  );
 }
 
 main().catch((err) => {

@@ -1,5 +1,5 @@
 import type { HaAttributes, HaStatus } from "shared";
-import { HaClient } from "./client.js";
+import type { HaApiClient } from "./client.js";
 import { HaCache } from "./cache.js";
 
 export interface HaSink {
@@ -18,7 +18,7 @@ export interface HaAdapterOptions {
 }
 
 export class HaAdapter {
-  private readonly client: HaClient;
+  private readonly client: HaApiClient;
   private readonly cache = new HaCache();
   private readonly sink: HaSink;
   private readonly opts: HaAdapterOptions;
@@ -28,12 +28,11 @@ export class HaAdapter {
   private ready = false;
 
   constructor(
-    baseUrl: string,
-    token: string,
+    client: HaApiClient,
     sink: HaSink,
     opts: HaAdapterOptions,
   ) {
-    this.client = new HaClient({ baseUrl, token });
+    this.client = client;
     this.sink = sink;
     this.opts = opts;
   }

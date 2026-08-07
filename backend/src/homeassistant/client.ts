@@ -1,5 +1,11 @@
 import type { HaAttributes, HaEntity } from "shared";
 
+export interface HaApiClient {
+  getStates(): Promise<HaEntity[]>;
+  callService(domain: string, service: string, data?: HaAttributes): Promise<void>;
+  ping(): Promise<boolean>;
+}
+
 export interface HaClientOptions {
   baseUrl: string;
   token: string;
@@ -12,7 +18,7 @@ interface RawEntity {
   attributes: HaAttributes;
 }
 
-export class HaClient {
+export class HaClient implements HaApiClient {
   private readonly opts: Required<HaClientOptions>;
 
   constructor(opts: HaClientOptions) {
