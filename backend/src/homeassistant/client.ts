@@ -2,6 +2,7 @@ import type { HaAttributes, HaEntity } from "shared";
 
 export interface HaApiClient {
   getStates(): Promise<HaEntity[]>;
+  getState(entityId: string): Promise<HaEntity | null>;
   callService(domain: string, service: string, data?: HaAttributes): Promise<void>;
   ping(): Promise<boolean>;
 }
@@ -47,6 +48,19 @@ export class HaClient implements HaApiClient {
       state: e.state,
       attributes: e.attributes ?? {},
     }));
+  }
+
+  async getState(entityId: string): Promise<HaEntity | null> {
+    try {
+      const res = await this.fetch(
+        this.url(`/api/states/${encodeURIComponent(entityId)}`),
+        { method: "GET", headers: this.headers() },
+      );
+      const body = (await res.json()) as RawEntity;
+      return { entityId: body.entity_id, state: body.state, attributes: body.attributes ?? {} };
+    } catch {
+      return null;
+    }
   }
 
   async callService(

@@ -17,6 +17,12 @@ export class MockHaClient implements HaApiClient {
     }));
   }
 
+  async getState(entityId: string): Promise<HaEntity | null> {
+    const e = this.entries.get(entityId);
+    if (!e) return null;
+    return { entityId: e.entity_id, state: e.state, attributes: structuredClone(e.attributes) };
+  }
+
   async callService(
     domain: string,
     service: string,

@@ -58,6 +58,19 @@ export class HaAdapter {
     data?: HaAttributes,
   ): Promise<void> {
     await this.client.callService(domain, service, data);
+    const entityId = (data?.entity_id as string | undefined) ?? "";
+    if (entityId) {
+      setTimeout(() => {
+        this.refreshEntity(entityId).catch(() => {});
+      }, 400);
+    }
+  }
+
+  private async refreshEntity(entityId: string): Promise<void> {
+    const real = await this.client.getState(entityId);
+    if (!real || !this.running) return;
+    this.cache.apply([real]);
+    this.sink.sendHaChange(real);
   }
 
   private schedule(delayMs: number): void {

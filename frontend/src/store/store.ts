@@ -89,6 +89,21 @@ export function setHaChange(entity: HaEntity): void {
   set({ ha: { ...state.ha, [entity.entityId]: entity } });
 }
 
+export function optimisticEntity(
+  entityId: string,
+  mutate: (e: HaEntity) => HaEntity,
+): void {
+  const current = state.ha[entityId];
+  if (!current) return;
+  const next = mutate(current);
+  if (next.state === current.state && sameAttributes(current.attributes, next.attributes)) {
+    return;
+  }
+  state = { ...state, ha: { ...state.ha, [entityId]: next } };
+  refreshHaStatusCache();
+  emit();
+}
+
 export function setHaStatus(status: HaStatus, detail?: string): void {
   set({ haStatus: status, haDetail: detail });
 }

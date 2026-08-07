@@ -1,6 +1,8 @@
 import { callHa } from "./ws.js";
+import { optimisticEntity } from "../store/store.js";
 
 function turn(domain: string, entityId: string, on: boolean): void {
+  optimisticEntity(entityId, (e) => ({ ...e, state: on ? "on" : "off" }));
   callHa({ domain, service: on ? "turn_on" : "turn_off", data: { entity_id: entityId } });
 }
 
@@ -44,10 +46,16 @@ export function climateSet(
   entityId: string,
   data: { hvac_mode?: string; temperature?: number },
 ): void {
+  optimisticEntity(entityId, (e) => ({
+    ...e,
+    state: data.hvac_mode ?? e.state,
+    attributes: { ...e.attributes, ...(data.temperature !== undefined ? { temperature: data.temperature } : {}) },
+  }));
   callHa({ domain: "climate", service: "set_hvac_mode" in data ? "set_hvac_mode" : "set_temperature", data: { entity_id: entityId, ...data } });
 }
 
 export function climateSetFanMode(entityId: string, fanMode: string): void {
+  optimisticEntity(entityId, (e) => ({ ...e, attributes: { ...e.attributes, fan_mode: fanMode } }));
   callHa({ domain: "climate", service: "set_fan_mode", data: { entity_id: entityId, fan_mode: fanMode } });
 }
 
@@ -56,10 +64,16 @@ export function fanToggle(entityId: string, current: boolean): void {
 }
 
 export function fanSetPercentage(entityId: string, percentage: number): void {
+  optimisticEntity(entityId, (e) => ({
+    ...e,
+    state: percentage > 0 ? "on" : "off",
+    attributes: { ...e.attributes, percentage },
+  }));
   callHa({ domain: "fan", service: "set_percentage", data: { entity_id: entityId, percentage } });
 }
 
 export function fanSetDirection(entityId: string, direction: "forward" | "reverse"): void {
+  optimisticEntity(entityId, (e) => ({ ...e, attributes: { ...e.attributes, direction } }));
   callHa({ domain: "fan", service: "set_direction", data: { entity_id: entityId, direction } });
 }
 
