@@ -1,4 +1,4 @@
-import type { BooleanStateKey, LogoState, StatePatch } from "shared";
+import type { BooleanStateKey, HaAttributes, LogoState, StatePatch } from "shared";
 import type { StateCache } from "../logo/cache.js";
 import type { HaAdapter } from "./adapter.js";
 
@@ -12,6 +12,32 @@ const NAMED: Partial<Record<BooleanStateKey, string>> = {
   manualRunRequest: "control_hmi.manual_run",
 };
 
+function publishSensors(
+  state: LogoState,
+  setState: (id: string, state: string, attr?: HaAttributes) => Promise<void>,
+): void {
+  const bin = (on: boolean): string => (on ? "on" : "off");
+  setState("binary_sensor.hmi_motor", bin(state.pumpCommanded), {
+    friendly_name: "HMI Motor",
+    device_class: "running",
+  }).catch(() => {});
+  setState("binary_sensor.hmi_emergencia", bin(state.emergency), {
+    friendly_name: "HMI Emergencia",
+    device_class: "problem",
+  }).catch(() => {});
+  setState("binary_sensor.hmi_cisterna_sin_agua", bin(!state.cisternaHasWater), {
+    friendly_name: "HMI Cisterna sin agua",
+    device_class: "problem",
+  }).catch(() => {});
+  setState("binary_sensor.hmi_tanque_pide_llenar", bin(state.tankRequestFill), {
+    friendly_name: "HMI Tanque pide llenar",
+    device_class: "running",
+  }).catch(() => {});
+  setState("sensor.hmi_modo", state.pumpManualMode ? "manual" : "auto", {
+    friendly_name: "HMI Modo",
+  }).catch(() => {});
+}
+
 export function attachHaEvents(
   cache: StateCache,
   adapter: HaAdapter,
@@ -23,6 +49,8 @@ export function attachHaEvents(
       console.error(`HA event ${type} fallo:`, err);
     });
   };
+
+  publishSensors(cache.get(), (id, st, attr) => adapter.setState(id, st, attr));
 
   return cache.onChange((patch: StatePatch) => {
     const changes: Array<{ key: string; value: boolean; prev: boolean }> = [];
@@ -36,6 +64,9 @@ export function attachHaEvents(
         fire(named, { entity: key, on: v as boolean, prev: old });
       }
     }
-    fire("control_hmi.change", { changes, state: cache.get() });
+    const state = cache.get();
+    publishSensors(state, (id, st, attr) => adapter.setState(id, st, attr));
+    fire("control_hmi.change", { changes, state });
   });
 }
+
