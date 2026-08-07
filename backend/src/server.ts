@@ -12,6 +12,7 @@ import {
 } from "./logo/client.js";
 import { SimulatorModbusClient } from "./logo/simulator.js";
 import { WsHub } from "./websocket/hub.js";
+import { HaAdapter } from "./homeassistant/adapter.js";
 import type { LogoState } from "shared";
 
 function initialState(): LogoState {
@@ -88,16 +89,19 @@ async function main(): Promise<void> {
     hub.setStatus("simulating");
   } else {
     hub.setStatus("connecting");
-    try {
-      await client.connect();
-      hub.setStatus("online");
-    } catch (err) {
-      console.error("connect inicial fallido, reintentando en background:", err);
-      void reconnect();
-    }
+    void reconnect();
   }
 
   poller.start();
+
+  let haAdapter: HaAdapter | null = null;
+  if (config.haEnabled) {
+    haAdapter = new HaAdapter(config.haUrl, config.haToken, hub, {
+      pollMs: config.haPollMs,
+    });
+    hub.setHaAdapter(haAdapter);
+    haAdapter.start();
+  }
 
   const app = Fastify({ logger: true });
   await app.register(cors, { origin: config.corsOrigin });
@@ -109,6 +113,7 @@ async function main(): Promise<void> {
 
   const shutdown = async (): Promise<void> => {
     poller.stop();
+    haAdapter?.stop();
     await client.close();
     await app.close();
     process.exit(0);

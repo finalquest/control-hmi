@@ -48,3 +48,13 @@ export interface VmMapping {
   states: Record<BooleanStateKey, string>;
   numbers: Record<NumberKey, string>;
 }
+
+export type HaAttributes = Record<string, unknown>;
+
+export interface HaEntity {
+  entityId: string;
+  state: string;
+  attributes: HaAttributes;
+}
+
+export type HaStatus = "disconnected" | "connecting" | "ready" | "error";

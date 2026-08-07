@@ -437,3 +437,283 @@
 .hmi-clickable:hover {
   filter: brightness(1.18) drop-shadow(0 0 6px rgba(67, 160, 71, 0.5));
 }
+
+.btn--sm {
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 5px;
+}
+
+.ha-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.ha-screen__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ha-screen__title {
+  margin: 0;
+  font-size: 18px;
+  color: var(--text);
+}
+
+.ha-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ha-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.ha-grid--scene {
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+}
+
+.ha-grid--single {
+  grid-template-columns: minmax(150px, 240px);
+}
+
+.ha-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 12px 14px;
+  background: var(--panel-alt);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+  text-align: left;
+  color: var(--text);
+  min-height: 58px;
+}
+
+.ha-tile:hover:not(:disabled) {
+  background: #323d47;
+  border-color: #55606d;
+}
+
+.ha-tile:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.ha-tile--on {
+  background: rgba(67, 160, 71, 0.18);
+  border-color: var(--green);
+}
+
+.ha-tile__name {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.ha-tile__state {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+
+.ha-tile--on .ha-tile__state {
+  color: var(--green-bright, #5dc462);
+}
+
+.ha-tile .status-dot {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.ha-action {
+  font-size: 12px;
+}
+
+.ha-action--scene {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+
+.ha-action--scene:hover {
+  background: #3b8ef0;
+}
+
+.ha-action--script {
+  background: var(--panel-alt);
+  border-color: var(--border-strong);
+}
+
+.ha-action--button {
+  background: var(--panel-alt);
+  border-color: var(--amber);
+  color: var(--amber-bright, #ffd863);
+}
+
+.sensor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+}
+
+.sensor-tile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.sensor-tile--warn {
+  border-color: var(--red);
+  background: rgba(229, 57, 53, 0.1);
+}
+
+.sensor-tile__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sensor-tile__label {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sensor-tile__value {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.sensor-tile__unit {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+.climate {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  min-width: 280px;
+}
+
+.climate__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.climate__name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.climate__current {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--blue);
+  font-variant-numeric: tabular-nums;
+}
+
+.climate__current-unit {
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+.climate__modes,
+.fan__speeds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.climate__setpoint {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.stepper .value {
+  min-width: 56px;
+  text-align: center;
+}
+
+.ha-climate-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ha-fans {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.fan {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.fan__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.fan__name {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.fan__speeds .btn {
+  flex: 0 0 auto;
+  min-width: 36px;
+}
+
+@media (max-width: 600px) {
+  .ha-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  }
+}

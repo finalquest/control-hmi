@@ -3,6 +3,7 @@ import { NavBar, type ScreenId } from "./components/layout/NavBar.js";
 import { HomeScreen } from "./screens/HomeScreen.js";
 import { TestScreen } from "./screens/TestScreen.js";
 import { AguaScreen } from "./screens/AguaScreen.js";
+import { CasaScreen } from "./screens/CasaScreen.js";
 import { ElectricoScreen } from "./screens/ElectricoScreen.js";
 import { ConfiguracionScreen } from "./screens/ConfiguracionScreen.js";
 
@@ -16,6 +17,7 @@ export function App(): React.ReactNode {
         {screen === "home" && <HomeScreen />}
         {screen === "test" && <TestScreen />}
         {screen === "agua" && <AguaScreen />}
+        {screen === "casa" && <CasaScreen />}
         {screen === "electrico" && <ElectricoScreen />}
         {screen === "config" && <ConfiguracionScreen />}
       </div>

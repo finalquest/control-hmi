@@ -1,8 +1,11 @@
-import type { ClientMessage, Command, ServerMessage } from "shared";
+import type { ClientMessage, Command, HaCall, ServerMessage } from "shared";
 import {
   applyHello,
   applyPatch,
   setConnected,
+  setHaChange,
+  setHaSnapshot,
+  setHaStatus,
   setLastError,
   setStatus,
 } from "../store/store.js";
@@ -35,6 +38,16 @@ function handle(msg: ServerMessage): void {
       break;
     case "status":
       setStatus(msg.status, msg.detail);
+      break;
+    case "ha_snapshot":
+      setHaSnapshot(msg.entities);
+      setHaStatus(msg.status, msg.detail);
+      break;
+    case "ha_change":
+      setHaChange(msg.entity);
+      break;
+    case "ha_status":
+      setHaStatus(msg.status, msg.detail);
       break;
     case "error":
       setLastError(`${msg.code}: ${msg.message}`);
@@ -84,5 +97,11 @@ export function startWs(url?: string): void {
 export function sendCommand(command: Command): void {
   if (!socket || socket.readyState !== WebSocket.OPEN) return;
   const msg: ClientMessage = { type: "command", command };
+  socket.send(JSON.stringify(msg));
+}
+
+export function callHa(call: HaCall): void {
+  if (!socket || socket.readyState !== WebSocket.OPEN) return;
+  const msg: ClientMessage = { type: "ha_call", call };
   socket.send(JSON.stringify(msg));
 }

@@ -14,6 +14,10 @@ export interface Config {
   pollMs: number;
   httpPort: number;
   corsOrigin: string;
+  haEnabled: boolean;
+  haUrl: string;
+  haToken: string;
+  haPollMs: number;
 }
 
 function boolEnv(name: string, fallback: boolean): boolean {
@@ -30,6 +34,8 @@ function intEnv(name: string, fallback: number): number {
 }
 
 export function loadConfig(): Config {
+  const haToken = process.env.HA_TOKEN ?? "";
+  const haUrl = process.env.HA_URL ?? "https://dmplug.finalq.xyz";
   return {
     sim: boolEnv("SIM", true),
     logoHost: process.env.LOGO_HOST ?? "192.168.0.10",
@@ -38,5 +44,9 @@ export function loadConfig(): Config {
     pollMs: intEnv("POLL_MS", 250),
     httpPort: intEnv("PORT", 3001),
     corsOrigin: process.env.CORS_ORIGIN ?? "*",
+    haEnabled: boolEnv("HA_ENABLED", haToken.length > 0),
+    haUrl,
+    haToken,
+    haPollMs: intEnv("HA_POLL_MS", 2000),
   };
 }

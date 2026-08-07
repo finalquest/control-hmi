@@ -8,11 +8,14 @@
   --text-dim: #8b97a3;
   --text-muted: #5e6a76;
   --green: #43a047;
+  --green-bright: #5dc462;
   --red: #e53935;
+  --red-bright: #ff5a56;
   --gray: #6b7785;
   --blue: #2b7de6;
   --water: #3aa0ff;
   --amber: #f6c143;
+  --amber-bright: #ffd863;
   --shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
   --radius: 8px;
   color-scheme: dark;
