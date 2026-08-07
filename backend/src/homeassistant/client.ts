@@ -4,6 +4,7 @@ export interface HaApiClient {
   getStates(): Promise<HaEntity[]>;
   getState(entityId: string): Promise<HaEntity | null>;
   callService(domain: string, service: string, data?: HaAttributes): Promise<void>;
+  fireEvent(eventType: string, eventData?: HaAttributes): Promise<void>;
   ping(): Promise<boolean>;
 }
 
@@ -78,6 +79,20 @@ export class HaClient implements HaApiClient {
     );
     if (!res.ok) {
       throw new Error(`HA service ${domain}.${service} HTTP ${res.status}`);
+    }
+  }
+
+  async fireEvent(eventType: string, eventData?: HaAttributes): Promise<void> {
+    const res = await this.fetch(
+      this.url(`/api/events/${encodeURIComponent(eventType)}`),
+      {
+        method: "POST",
+        headers: this.headers(),
+        body: JSON.stringify(eventData ?? {}),
+      },
+    );
+    if (!res.ok) {
+      throw new Error(`HA event ${eventType} HTTP ${res.status}`);
     }
   }
 

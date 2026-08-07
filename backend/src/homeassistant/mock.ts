@@ -23,6 +23,10 @@ export class MockHaClient implements HaApiClient {
     return { entityId: e.entity_id, state: e.state, attributes: structuredClone(e.attributes) };
   }
 
+  async fireEvent(_eventType: string, _eventData?: HaAttributes): Promise<void> {
+    return;
+  }
+
   async callService(
     domain: string,
     service: string,

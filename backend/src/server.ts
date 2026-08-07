@@ -16,6 +16,7 @@ import { WsHub } from "./websocket/hub.js";
 import { HaAdapter } from "./homeassistant/adapter.js";
 import { HaClient } from "./homeassistant/client.js";
 import { MockHaClient } from "./homeassistant/mock.js";
+import { attachHaEvents } from "./homeassistant/events.js";
 import type { LogoState } from "shared";
 
 function initialState(): LogoState {
@@ -105,6 +106,7 @@ async function main(): Promise<void> {
     haAdapter = new HaAdapter(client, hub, { pollMs: config.haPollMs });
     hub.setHaAdapter(haAdapter);
     haAdapter.start();
+    attachHaEvents(cache, haAdapter);
   }
 
   const app = Fastify({ logger: true });
