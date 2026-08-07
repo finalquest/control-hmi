@@ -869,6 +869,39 @@
   margin-top: 12px;
 }
 
+.wan {
+  margin-top: 12px;
+  padding: 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.wan__title {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.wan__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 6px;
+}
+
+.readout--accent {
+  border-color: var(--blue);
+  background: rgba(43, 125, 230, 0.1);
+}
+
+.readout--accent .readout__value {
+  color: var(--blue);
+  font-size: 18px;
+}
+
 @media (max-width: 600px) {
   .rooms {
     grid-template-columns: 1fr;

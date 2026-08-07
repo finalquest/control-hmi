@@ -211,16 +211,16 @@ export const INFRA = {
     "binary_sensor.lxc_unifi_103_status",
     "binary_sensor.lxc_nginxproxymanager_104_status",
   ],
-  disks: [
-    "binary_sensor.disk_homelab_samsung_mzvlb512hajq_000l7_health",
-    "sensor.disk_homelab_samsung_mzvlb512hajq_000l7_temperature",
-    "binary_sensor.disk_homelab_wd_green_2_5_1000gb_health",
-    "sensor.disk_homelab_wd_green_2_5_1000gb_temperature",
-  ],
   temps: [
     "sensor.central_dogma_temperature",
     "sensor.terminal_dogma_terminal_dogma_cpu_temperature",
   ],
+  wan: {
+    down: "sensor.terminal_dogma_port_9_rx",
+    up: "sensor.terminal_dogma_port_9_tx",
+    latencyCloudflare: "sensor.terminal_dogma_cloudflare_wan_latency",
+    latencyGoogle: "sensor.terminal_dogma_google_wan_latency",
+  },
   network: [
     "light.geofront_led",
     "light.matsushiro_led",
