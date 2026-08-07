@@ -71,9 +71,6 @@ export const HA_TRACKED_ENTITIES: readonly string[] = [
   "sensor.central_dogma_temperature",
   "sensor.terminal_dogma_terminal_dogma_cpu_temperature",
 
-  "sensor.k1max_a01c_bed_temperature",
-  "sensor.k1max_a01c_extruder_temperature",
-
   "sensor.aire_acondicionado_energy_yesterday",
   "sensor.aire_acondicionado_energy_this_month",
   "sensor.aire_acondicionado_energy_last_month",

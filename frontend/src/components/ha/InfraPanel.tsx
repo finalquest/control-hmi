@@ -97,8 +97,6 @@ export function InfraPanel(): React.ReactNode {
         {INFRA.temps.map((id) => (
           <TempReadout key={id} entityId={id} label="CPU" />
         ))}
-        <TempReadout entityId={INFRA.k1max.bed} label="K1Max cama" />
-        <TempReadout entityId={INFRA.k1max.extruder} label="K1Max extrusor" />
       </div>
     </section>
   );

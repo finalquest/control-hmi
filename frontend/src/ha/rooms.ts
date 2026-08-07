@@ -229,8 +229,4 @@ export const INFRA = {
     "light.tokyo_3_led",
   ],
   control: ["switch.control_24v", "switch.motor"],
-  k1max: {
-    bed: "sensor.k1max_a01c_bed_temperature",
-    extruder: "sensor.k1max_a01c_extruder_temperature",
-  },
 } as const;
