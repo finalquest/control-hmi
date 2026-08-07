@@ -4,7 +4,6 @@ import { OverviewBar } from "../components/ha/OverviewBar.js";
 import { RoomCard } from "../components/ha/RoomCard.js";
 import { EnergyPanel } from "../components/ha/EnergyPanel.js";
 import { InfraPanel } from "../components/ha/InfraPanel.js";
-import { ClimateCard } from "../components/ha/ClimateCard.js";
 import { HaStatusBadge } from "../components/ha/HaStatusBadge.js";
 
 export function CasaScreen(): React.ReactNode {
@@ -36,13 +35,6 @@ export function CasaScreen(): React.ReactNode {
           {interior.map((r) => (
             <RoomCard key={r.id} room={r} entities={ha} />
           ))}
-        </div>
-      </section>
-
-      <section className="panel">
-        <h3 className="panel__title">Clima — Aire acondicionado</h3>
-        <div className="casa__climate">
-          <ClimateCard entityId="climate.aire_acondicionado" />
         </div>
       </section>
 

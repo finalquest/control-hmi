@@ -4,6 +4,7 @@ import { HomeScreen } from "./screens/HomeScreen.js";
 import { TestScreen } from "./screens/TestScreen.js";
 import { AguaScreen } from "./screens/AguaScreen.js";
 import { CasaScreen } from "./screens/CasaScreen.js";
+import { ClimaScreen } from "./screens/ClimaScreen.js";
 import { ConfiguracionScreen } from "./screens/ConfiguracionScreen.js";
 
 export function App(): React.ReactNode {
@@ -17,6 +18,7 @@ export function App(): React.ReactNode {
         {screen === "test" && <TestScreen />}
         {screen === "agua" && <AguaScreen />}
         {screen === "casa" && <CasaScreen />}
+        {screen === "clima" && <ClimaScreen />}
         {screen === "config" && <ConfiguracionScreen />}
       </div>
     </div>
