@@ -43,10 +43,16 @@ export const HA_TRACKED_ENTITIES: readonly string[] = [
   "sensor.temperatura_oficina_battery",
 
   "binary_sensor.sensor_puertoa_contact",
-  "binary_sensor.sensor_puertoa_battery_low",
+  "sensor.sensor_puertoa_battery",
   "sensor.sensor_puertoa_voltage",
   "binary_sensor.movimiento_pintuira_occupancy",
+  "sensor.movimiento_pintuira_battery",
+  "sensor.movimiento_pintuira_illumination",
+  "sensor.movimiento_pintuira_voltage",
   "binary_sensor.movimiento_galpon_occupancy",
+  "sensor.movimiento_galpon_battery",
+  "sensor.movimiento_galpon_illumination",
+  "sensor.movimiento_galpon_voltage",
 
   "binary_sensor.node_homelab_status",
   "binary_sensor.node_homelab_updates_packages",

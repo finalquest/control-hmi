@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { useHmiState } from "../../store/store.js";
 import { Status } from "../hmi/Status.js";
 
-export type ScreenId = "home" | "test" | "agua" | "casa" | "electrico" | "config";
+export type ScreenId = "home" | "test" | "agua" | "casa" | "config";
 
 interface NavBarProps {
   current: ScreenId;
@@ -14,7 +14,6 @@ const tabs: Array<{ id: ScreenId; label: string }> = [
   { id: "test", label: "Test" },
   { id: "agua", label: "Agua" },
   { id: "casa", label: "Casa" },
-  { id: "electrico", label: "Eléctrico" },
   { id: "config", label: "Configuración" },
 ];
 
