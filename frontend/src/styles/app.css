@@ -849,6 +849,10 @@
   border-radius: 6px;
 }
 
+.infra-block--wide {
+  grid-column: 1 / -1;
+}
+
 .infra-block__title {
   font-size: 11px;
   text-transform: uppercase;
@@ -869,27 +873,11 @@
   margin-top: 12px;
 }
 
-.wan {
-  margin-top: 12px;
-  padding: 10px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-}
-
-.wan__title {
-  display: block;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-}
-
 .wan__grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   gap: 6px;
+  margin-top: 8px;
 }
 
 .readout--accent {

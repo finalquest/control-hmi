@@ -65,23 +65,33 @@ function WanReadout({
   );
 }
 
+function NetworkingBlock(): React.ReactNode {
+  return (
+    <div className="infra-block infra-block--wide">
+      <span className="infra-block__title">Networking</span>
+      <div className="infra-block__row">
+        {INFRA.network.map((id) => (
+          <DeviceLamp key={id} entityId={id} size={26} />
+        ))}
+      </div>
+      <div className="wan__grid">
+        <WanReadout entityId={INFRA.wan.down} label="Download" unit="Mbit/s" highlight />
+        <WanReadout entityId={INFRA.wan.up} label="Upload" unit="Mbit/s" highlight />
+        <WanReadout entityId={INFRA.wan.latencyCloudflare} label="Latencia Cloudflare" unit="ms" />
+        <WanReadout entityId={INFRA.wan.latencyGoogle} label="Latencia Google" unit="ms" />
+      </div>
+    </div>
+  );
+}
+
 export function InfraPanel(): React.ReactNode {
   return (
     <section className="panel">
       <h3 className="panel__title">Infraestructura</h3>
       <div className="infra-grid">
         <StatusRow title="Proxmox / VMs" ids={INFRA.proxmox} />
-        <StatusRow title="Networking" ids={INFRA.network} />
+        <NetworkingBlock />
         <StatusRow title="Control" ids={INFRA.control} />
-      </div>
-      <div className="wan">
-        <span className="wan__title">WAN · Terminal Dogma (puerto 9)</span>
-        <div className="wan__grid">
-          <WanReadout entityId={INFRA.wan.down} label="Download" unit="Mbit/s" highlight />
-          <WanReadout entityId={INFRA.wan.up} label="Upload" unit="Mbit/s" highlight />
-          <WanReadout entityId={INFRA.wan.latencyCloudflare} label="Latencia Cloudflare" unit="ms" />
-          <WanReadout entityId={INFRA.wan.latencyGoogle} label="Latencia Google" unit="ms" />
-        </div>
       </div>
       <div className="infra-temps">
         {INFRA.temps.map((id) => (
