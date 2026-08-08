@@ -70,14 +70,6 @@ export class HaAdapter {
     await this.client.fireEvent(eventType, eventData);
   }
 
-  async setState(
-    entityId: string,
-    state: string,
-    attributes?: HaAttributes,
-  ): Promise<void> {
-    await this.client.setState(entityId, state, attributes);
-  }
-
   private async refreshEntity(entityId: string): Promise<void> {
     const real = await this.client.getState(entityId);
     if (!real || !this.running) return;

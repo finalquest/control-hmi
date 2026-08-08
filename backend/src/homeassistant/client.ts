@@ -5,7 +5,6 @@ export interface HaApiClient {
   getState(entityId: string): Promise<HaEntity | null>;
   callService(domain: string, service: string, data?: HaAttributes): Promise<void>;
   fireEvent(eventType: string, eventData?: HaAttributes): Promise<void>;
-  setState(entityId: string, state: string, attributes?: HaAttributes): Promise<void>;
   ping(): Promise<boolean>;
 }
 
@@ -94,24 +93,6 @@ export class HaClient implements HaApiClient {
     );
     if (!res.ok) {
       throw new Error(`HA event ${eventType} HTTP ${res.status}`);
-    }
-  }
-
-  async setState(
-    entityId: string,
-    state: string,
-    attributes?: HaAttributes,
-  ): Promise<void> {
-    const res = await this.fetch(
-      this.url(`/api/states/${encodeURIComponent(entityId)}`),
-      {
-        method: "POST",
-        headers: this.headers(),
-        body: JSON.stringify({ state, attributes: attributes ?? {} }),
-      },
-    );
-    if (!res.ok) {
-      throw new Error(`HA setState ${entityId} HTTP ${res.status}`);
     }
   }
 
